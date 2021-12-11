@@ -1,10 +1,6 @@
 # cra-template-kiwi
 
-This is the official TypeScript template for [Create React App](https://github.com/facebook/create-react-app).
-
-To use this template, add `--template kiwi` when creating a new app.
-
-For example:
+这是一个`React Typescript`模板，配合[Create React App](https://github.com/facebook/create-react-app)使用，`create-react-app`版本`3.3.0`以上（搭建该模板使用的`4.0.3`）
 
 ```sh
 npx create-react-app my-app --template kiwi
@@ -14,8 +10,6 @@ npx create-react-app my-app --template kiwi
 yarn create react-app my-app --template kiwi
 ```
 
-For more information, please refer to:
+# 模板搭建笔记
 
-- [Getting Started](https://create-react-app.dev/docs/getting-started) – How to create a new app.
-- [User Guide](https://create-react-app.dev) – How to develop apps bootstrapped with Create React App.
-- [Custom Templates](https://create-react-app.dev/docs/custom-templates)
+该模板参考[create-react-app](https://github.com/facebook/create-react-app)官方提供的[Custom Templates](https://create-react-app.dev/docs/custom-templates)搭建，一些必要文件说明可以看[Custom Templates](https://create-react-app.dev/docs/custom-templates)说明。
