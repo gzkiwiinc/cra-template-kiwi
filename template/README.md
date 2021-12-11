@@ -1,46 +1,286 @@
-# Getting Started with Create React App
+# 创建项目
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+```
+npx create-react-app my-app --template kiwi
+```
 
-## Available Scripts
+# 开发
 
-In the project directory, you can run:
+## 开发调试
 
-### `npm start`
+执行`yarn dev`命令可本地运行该项目，打开[http://localhost:3000](http://localhost:3000)可在线调试。
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+```bash
+yarn dev
+```
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+## 编译
 
-### `npm test`
+执行`yarn build`可以编译项目，输出路径为`build`文件夹
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+```bash
+yarn build
+```
 
-### `npm run build`
+# 项目搭建
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## scss 配置
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+### 方式一：直接在组件中 import "./app.scss"
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+```javascript
+//app.scss
+.main {
+	background: white;
+    ...
+}
 
-### `npm run eject`
+// app.tsx
+import "./app.scss"
+...
+    <div className="main">
+ 		...
+   	</div>
+...
+```
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+由于 react 中的 css 没有域的概念，会造成全局污染，为了解决这个问题，我们可以为每个 scss 文件创建一个 namespace，如下
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+```javascript
+//app.scss
+$namespace: "app";
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+.#{$namespace} {
+    &--main {
+        background: white;
+    }
+}
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+//app.tsx
+import "./app.scss"
+const namespace = () => `app`
+...
+	<div className={`${namespace}--main`}>
+    	...
+    </div>
+...
+```
 
-## Learn More
+### 方式二：import styles from "./index.moudle.scss"
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+参考了 react-scripts 中的 webpack.config.js 配置，使能/\.module\.(css|scss)/模块化
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+```javascript
+// webpack.config.js
+...
+module: {
+	rules: [
+    ...
+    {
+			test: /\.scss$/,
+			exclude: [
+				/node_modules/,
+			],
+			oneOf: [
+				{
+					test: /\.module\.scss$/,
+					use: [
+						MiniCssExtractPlugin.loader,
+						{
+							loader: "css-loader",
+							options: {
+								modules: {
+									localIdentName: '[path][name]__[local]--[hash:base64:5]',
+								},
+								sourceMap: DEV,
+							}
+						},
+						{
+							loader: "sass-loader",
+							options: {
+								sourceMap: DEV,
+							}
+						},
+					]
+				},
+				{
+					use: [
+						MiniCssExtractPlugin.loader,
+						{
+							loader: "css-loader",
+							options: {
+								sourceMap: DEV,
+							}
+						},
+						{
+							loader: "sass-loader",
+							options: {
+								sourceMap: DEV,
+							}
+						},
+					],
+				}
+			],
+		},
+    ...
+   ]
+ },
+ plugins: [
+		...
+		new MiniCssExtractPlugin({
+			filename: DEV ? '[name].css' : '[name].[contenthash].css',
+			chunkFilename: DEV ? '[id].css' : '[id].[hash].css'
+		}),
+	]
+```
+
+使用\*.module.scss 的 moudles 特性可以解决命名冲突问题， 用法如下
+
+```javascript
+//app.scss
+
+.main {
+	 background: white;
+  ...
+}
+
+// app.tsx
+import styles from "./app.module.scss"
+...
+ 	<div className={`${styles.main}`}>
+ 		...
+   	</div>
+...
+```
+
+● 开发过程中尽量使用方式二
+
+注：
+
+1. 很多旧的 css-loader 教程中直接在 option 中设置 localIdentName， 由于版本的更新已经不支持这样直接写入 localIdentName， 最新官方文档的写法是将配置包裹进 modules 的 object 里
+
+```javascript
+...
+{
+  loader: "css-loader",
+  options: {
+      sourceMap: true,
+      modules: {
+      	localIdentName: '[path][name]__[local]--[hash:base64:5]',
+    },
+  }
+},
+...
+```
+
+2. typescript 中直接 import styles from "./index.scss"会报找不到模块的错误，解决方法为使用 require 或 添加以下全局声明，可参考这里
+
+```javascript
+declare module '*.scss' {
+  const content: any;
+  export default content;
+}
+```
+
+3. 只有在 css-loader 中的 modules 设置为 true|object 时，import styles from "./index.scss 中的 styles 才可以拿到对应的样式，否则 styles 为{}
+
+## 集成 antd UI 库
+
+> [Ant Design 官网](https://ant.design/docs/react/introduce-cn)
+
+### 1. 安装依赖
+
+```bash
+yarn add antd
+```
+
+### 2. 导入样式
+
+ant design 有以下三种导入方式
+
+#### 方式一：全局导入
+
+导入全局样式，该方法会导入所有的 antd 样式文件（600 多 K）
+
+```javascript
+import 'antd/dist/antd.css';
+import { Button } from 'antd';
+
+...
+    <Button>按钮</Button>
+...
+```
+
+#### 方式二：手动导入
+
+手动按需导入，该方法只会导入用到的 css， 但是写法麻烦
+
+```javascript
+import { Button } from 'antd';
+import 'antd/es/button/style/css';
+
+...
+    <Button>按钮</Button>
+...
+```
+
+#### 方式三：按需导入
+
+自动按需导入， 使用 ts-import-plugin(ts-loader)实现按需导入功能（babel-loader 时可使用 babel-plugin-import）
+
+```javascript
+yarn -dev add ts-import-plugin
+
+// webpack.config.js
+const tsImportPluginFactory = require('ts-import-plugin')
+....
+  {
+        test: /\.ts(x?)$/,
+        exclude: /node_modules/,
+        use: [
+          {
+            loader: "ts-loader",
+            options: {
+              silent: true,
+              transpileOnly: DEV ? false : true,
+              getCustomTransformers: () => ({
+                before: [tsImportPluginFactory({
+                  libraryName: 'antd',
+                  libraryDirectory: 'lib',
+                  style: 'css'
+                })]
+              }),
+            }
+          }
+        ]
+    },
+...
+
+
+// app.tsx
+//配置好ts-import-plugin后直接import { Button } from 'antd';会按需加载样式文件
+import { Button } from 'antd';
+...
+    <Button>按钮</Button>
+...
+```
+
+### 使用
+
+```javascript
+// app.tsx
+import styles from "./app.module.scss";
+import { Button } from 'antd';
+...
+  <div className={styles.appContainer}>
+      <Button>按钮</Button>
+  </div>
+...
+
+// app.module.scss
+.appContainer {
+  :global {
+      // 在这里通过找到antd类名来修改组件的样式
+  }
+}
+```
