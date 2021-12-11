@@ -6,8 +6,42 @@
       "typescript": "^4.1.2",
       "web-vitals": "^1.0.1"
     },
+    "engines": {
+      "node": ">= 6.0.0",
+      "npm": ">= 3.0.0"
+    },
     "eslintConfig": {
       "extends": ["react-app", "react-app/jest"]
+    },
+    "scripts": {
+      "bootstrap": "./scripts/bootstrap.sh",
+      "dev": "./scripts/dev.sh",
+      "clean": "rm -rf build/**",
+      "build:stage": "yarn clean && mesh build reactapp stage",
+      "build:prod": "yarn clean && mesh build reactapp mainland",
+      "build:prod:rc": "yarn clean && mesh build reactapp rc",
+      "build:prod:intl": "yarn clean && mesh build reactapp intl",
+      "deploy:stage": "yarn build:stage && mesh deploy reactapp stage",
+      "deploy:prod": "yarn build:prod && mesh deploy reactapp mainland",
+      "deploy:prod:rc": "yarn build:prod:rc && mesh deploy reactapp rc",
+      "deploy:prod:intl": "yarn build:prod:intl && mesh deploy reactapp intl",
+      "publish:stage": "yarn deploy:stage && mesh publish stage",
+      "publish:prod": "yarn deploy:prod && mesh publish mainland",
+      "publish:prod:rc": "yarn deploy:prod:rc && mesh publish rc",
+      "only:deploy:stage": "mesh deploy reactapp stage",
+      "only:deploy:prod": "mesh deploy reactapp mainland",
+      "only:deploy:prod:rc": "mesh deploy reactapp rc",
+      "only:publish:stage": "mesh publish stage",
+      "only:publish:prod": "mesh publish mainland",
+      "only:publish:prod:rc": "mesh publish rc",
+      "lint": "eslint src/**/*.ts{,x}",
+      "docz:dev": "docz dev",
+      "docz:build": "docz build",
+      "docz:serve": "docz serve",
+      "start": "yarn dev",
+      "build": "yarn build:stage",
+      "test": "echo 1",
+      "eject": "echo 1"
     },
     "devDependencies": {
       "@testing-library/jest-dom": "^5.11.4",
@@ -37,6 +71,7 @@
       "html-webpack-plugin": "^4.2.0",
       "husky": "^4.2.5",
       "interpolate-html-plugin": "^4.0.0",
+      "mesh-dev-cli": "^1.3.0",
       "mini-css-extract-plugin": "^0.9.0",
       "node-sass": "^4.13.1",
       "prettier": "^2.1.2",
