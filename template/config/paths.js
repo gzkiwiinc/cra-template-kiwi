@@ -8,7 +8,7 @@ module.exports = {
     port: 3000,
     resolveApp,
     entryPath: () => resolveApp('src/index.tsx'),
-    buildPath: () => resolveApp('build'),
+	buildPath: () => resolveApp("wwwroot/dist"),
     htmlPath: () => resolveApp('public/index.html'),
     imagesPath: () => resolveApp('src/images'),
     publicPath: () => resolveApp('public'),

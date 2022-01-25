@@ -19,12 +19,15 @@ npm publish
 
 ## 调试
 
-本地调试需要使用`create-react-app`拉取模板，但是这样需要我们将模板部署到线上，为了不污染线上版本，我们可以先将模板部署到`cra-template-kiwi-test`，等调试功能正常后再部署到`cra-template-kiwi`，具体操作如下：
+~~本地调试需要使用`create-react-app`拉取模板，但是这样需要我们将模板部署到线上，为了不污染线上版本，我们可以先将模板部署到`cra-template-kiwi-test`，等调试功能正常后再部署到`cra-template-kiwi`，具体操作如下：~~
 
-1. 将`package.json`中的name改成`cra-template-kiwi-test`，version改成大于[cra-template-kiwi-test npm线上版本](https://www.npmjs.com/package/cra-template-kiwi-test)
-2. 将create-react-app的template参数设置成`kiwi-test`(如下)
+1. ~~将`package.json`中的name改成`cra-template-kiwi-test`，version改成大于[cra-template-kiwi-test npm线上版本](https://www.npmjs.com/package/cra-template-kiwi-test)~~
+2. ~~将create-react-app的template参数设置成`kiwi-test`(如下)~~
+~~```npx create-react-app my-app --template kiwi-test```~~
+
+执行以下命令，可以本地测试template（参考[这里](https://create-react-app.dev/docs/custom-templates/#testing-a-template)）
 ```
-npx create-react-app my-app --template kiwi-test
+npx create-react-app my-app --template file:../path/to/your/template/cra-template-[template-name]
 ```
 
 # 模板搭建笔记

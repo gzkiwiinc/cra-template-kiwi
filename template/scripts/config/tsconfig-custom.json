@@ -4,15 +4,23 @@
         "baseUrl": ".",
         "moduleResolution": "node",
         "target": "es6",
-        "jsx": "react",
-        "strict": false,
+        "module": "es2020",
+        "jsx": "react-jsx",
+        "strict": true,
+        "allowJs": true,
+        "noImplicitAny": false,
         "strictNullChecks": true,
         "rootDir": "src",
         "experimentalDecorators": true,
         "allowSyntheticDefaultImports": true,
         "sourceMap": true,
         "skipDefaultLibCheck": true,
-        "lib": ["es6", "dom"],
+        "esModuleInterop": true,
+        "resolveJsonModule": true,
+        "plugins": [{ "name": "typescript-plugin-css-modules" }],
+        "paths": {
+            "*": ["*", "./src/types/*"]
+        }
     },
-    "exclude": ["bin", "node_modules"]
+    "include": ["src"]
 }
