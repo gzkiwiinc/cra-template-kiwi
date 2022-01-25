@@ -33,7 +33,7 @@ npx create-react-app my-app --template file:../path/to/your/template/cra-templat
 # 模板搭建笔记
 
 ## 项目工程化
-为了让模板更加的开箱即用，我们添加了很多好用的功能，如环境变量配置、redux引入、webpack配置等等，搭建过程中的问题和笔记都记录在[这里](./README_FOR_TEMPLATE.md)
+为了让模板更加的开箱即用，我们添加了很多好用的功能，如环境变量配置、redux引入、webpack配置等等，搭建过程中的问题和笔记都记录在[这里](./README_FOR_TEMPLATE.md)。
 
 ## 注意
 该模板参考[create-react-app](https://github.com/facebook/create-react-app)官方提供的[Custom Templates](https://create-react-app.dev/docs/custom-templates)搭建，所以有些文件是必要的的，具体可以看[Custom Templates](https://create-react-app.dev/docs/custom-templates)说明。

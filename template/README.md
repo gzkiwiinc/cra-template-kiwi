@@ -23,3 +23,7 @@ yarn dev
 ```bash
 yarn build
 ```
+
+# Note
+
+- [React模板搭建笔记](https://github.com/gzkiwiinc/cra-template-kiwi/blob/HEAD/README_FOR_TEMPLATE.md)
